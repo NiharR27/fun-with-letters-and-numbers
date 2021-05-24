@@ -282,6 +282,31 @@ def op_address_list(T, prefix = None):
 
 # ----------------------------------------------------------------------------
 
+def get_ops(arg): # returns (list of operators, list of their indices)
+    ops = [arg[0]] # first elem is an operator, so add it
+    idx = [[0]] # add this index 0
+    for i in (1, 2): # for each position 1 and 2,
+        if type(arg[i]) is list: # if NOT scalar
+            ops_sub, idx_sub = get_ops(arg[i]) # recurse!
+            ops += ops_sub # add the list of ops from the sublist
+            for x in idx_sub: # add the indices from the sublist, while prepending the position of this sublist for each
+                idx.append([i] + x)
+    return ops, idx
+
+def get_nums(arg): # basically the same goes here
+    nums = []
+    idx = []
+    for i in (1, 2):
+        if type(arg[i]) is list:
+            nums_sub, idx_sub = get_nums(arg[i])
+            nums += nums_sub
+            for x in idx_sub:
+                idx.append([i] + x)
+        else:
+            nums.append(arg[i])
+            idx.append([i])
+    return nums, idx
+
 def decompose(T, prefix = None):
     '''
     Compute
@@ -327,8 +352,12 @@ def decompose(T, prefix = None):
         return Aop, Lop, Anum, Lnum
     
     assert isinstance(T, list)
+    Lop,Aop = get_ops(T)
+    Lnum, Anum = get_nums(T)
     
-    raise NotImplementedError()
+    return Aop, Lop, Anum, Lnum
+    
+    
 
 
 # ----------------------------------------------------------------------------

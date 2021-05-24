@@ -1,11 +1,7 @@
 T1 = ['-', ['+', ['-', 75, ['-', 10, 3]], ['-', 100, 50]], 3]
 T2 = T = ['+', ['*', 5, 4] ,['-', 100, ['/', 20, 2] ]]
 
-def evaluate(arg):
-    if type(arg) is list:
-        return eval(f'{evaluate(arg[1])} {arg[0]} {evaluate(arg[2])}')
-    else:
-        return arg
+
 
 def get_ops(arg):
     ops = [arg[0]]
