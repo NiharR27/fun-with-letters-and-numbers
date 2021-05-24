@@ -281,6 +281,8 @@ def op_address_list(T, prefix = None):
 
 # ----------------------------------------------------------------------------
 
+#Example tree: T1 = ['-', ['+', ['-', 75, ['-', 10, 3]], ['-', 100, 50]], 3]
+#Example tree: T2 = T = ['+', ['*', 5, 4] ,['-', 100, ['/', 20, 2] ]]
 def get_ops(arg): # returns (list of operators, list of their indices)
     ops = [arg[0]] # first elem is an operator, so add it
     idx = [[0]] # add this index 0
