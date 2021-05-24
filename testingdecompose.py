@@ -1,55 +1,47 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon May 24 11:14:36 2021
+T1 = ['-', ['+', ['-', 75, ['-', 10, 3]], ['-', 100, 50]], 3]
+T2 = T = ['+', ['*', 5, 4] ,['-', 100, ['/', 20, 2] ]]
 
-@author: Nihar
-"""
+def evaluate(arg):
+    if type(arg) is list:
+        return eval(f'{evaluate(arg[1])} {arg[0]} {evaluate(arg[2])}')
+    else:
+        return arg
 
-def decompose(T, prefix = None):
-    '''
-    Compute
-        Aop : address list of the operators
-        Lop : list of the operators
-        Anum : address of the numbers
-        Lnum : list of the numbers
-    
-    For example, if 
-    
-    T =  ['-', ['+', ['-', 75, ['-', 10, 3]], ['-', 100, 50]], 3]
-    
-    then, 
-    
-     Aop is  [[0], [1, 0], [1, 1, 0], [1, 1, 2, 0], [1, 2, 0]] 
-    
-     Lop is ['-', '+', '-', '-', '-'] 
-    
-     Anum is [[1, 1, 1], [1, 1, 2, 1], [1, 1, 2, 2], [1, 2, 1], [1, 2, 2], [2]] 
-    
-     Lnum is [75, 10, 3, 100, 50, 3]    
-        
-    
-    Parameters
-    ----------
-    T : expression tree 
-    
-    prefix : address to preprend 
+def get_ops(arg):
+    ops = [arg[0]]
+    idx = [[0]]
+    for i in (1, 2):
+        if type(arg[i]) is list:
+            ops_sub, idx_sub = get_ops(arg[i])
+            ops += ops_sub
+            for x in idx_sub:
+                idx.append([i] + x)
+    return ops, idx
 
-    Returns
-    -------
-    Aop, Lop, Anum, Lnum
+def get_nums(arg):
+    nums = []
+    idx = []
+    for i in (1, 2):
+        if type(arg[i]) is list:
+            nums_sub, idx_sub = get_nums(arg[i])
+            nums += nums_sub
+            for x in idx_sub:
+                idx.append([i] + x)
+        else: # if scalar
+            nums.append(arg[i])
+            idx.append([i])
+    return nums, idx
 
-    '''
-    if prefix is None:
-        prefix = []
+operatorlist,operatorindex = get_ops(T2)
 
-    if isinstance(T, int):
-        Aop = []
-        Lop = [] 
-        Anum = [prefix]
-        Lnum = [T]
-        return Aop, Lop, Anum, Lnum
-    
-    assert isinstance(T, list)
-    
-    raise NotImplementedError()
-    
+numberlist, numberindex = get_nums(T2)
+
+print('this is the tree: ',T2)
+print()
+print(operatorlist)
+print()
+print(operatorindex)
+print()
+print(numberlist)
+print()
+print(numberindex)
