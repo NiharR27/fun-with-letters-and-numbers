@@ -284,6 +284,31 @@ def op_address_list(T, prefix = None):
 #Example tree: T1 = ['-', ['+', ['-', 75, ['-', 10, 3]], ['-', 100, 50]], 3]
 #Example tree: T2 = T = ['+', ['*', 5, 4] ,['-', 100, ['/', 20, 2] ]]
 def get_ops(arg): # returns (list of operators, list of their indices)
+    '''
+    Compute
+        ops: list of Operators inside the tree
+        idx: list of index of the operators inside the tree
+    
+        For example, if 
+    
+        T =  ['-', ['+', ['-', 75, ['-', 10, 3]], ['-', 100, 50]], 3]
+    
+        then, 
+    
+         idx is  [[0], [1, 0], [1, 1, 0], [1, 1, 2, 0], [1, 2, 0]] 
+     
+         ops is ['-', '+', '-', '-', '-'] 
+      
+        Parameters
+        ----------
+        arg : expression tree 
+
+
+        Returns
+        -------
+        ops,idx
+    
+    '''
     ops = [arg[0]] # first elem is an operator, so add it
     idx = [[0]] # add this index 0
     for i in (1, 2): # for each position 1 and 2,
@@ -291,10 +316,36 @@ def get_ops(arg): # returns (list of operators, list of their indices)
             ops_sub, idx_sub = get_ops(arg[i]) # recurse!
             ops += ops_sub # add the list of ops from the sublist
             for x in idx_sub: # add the indices from the sublist, while prepending the position of this sublist for each
-                idx.append([i] + x)
-    return ops, idx
+                idx.append([i] + x) #Appending the current index to idx
+    return ops, idx 
 
 def get_nums(arg): # basically the same goes here
+
+    '''
+    Compute
+        nums: list of numbers inside the tree
+        idx: list of index of the numbers inside the tree
+    
+        For example, if 
+    
+        T =  ['-', ['+', ['-', 75, ['-', 10, 3]], ['-', 100, 50]], 3]
+    
+        then, 
+    
+         idx is [[1, 1, 1], [1, 1, 2, 1], [1, 1, 2, 2], [1, 2, 1], [1, 2, 2], [2]] 
+    
+         nums is [75, 10, 3, 100, 50, 3]   
+      
+        Parameters
+        ----------
+        arg : expression tree 
+
+
+        Returns
+        -------
+        nums,idx
+    
+    '''
     nums = []
     idx = []
     for i in (1, 2):
@@ -342,19 +393,20 @@ def decompose(T, prefix = None):
     Aop, Lop, Anum, Lnum
 
     '''
-    if prefix is None:
-        prefix = []
+    if prefix is None: #If prefix is none
+        prefix = [] #Create an empty list
 
-    if isinstance(T, int):
-        Aop = []
+    if isinstance(T, int): #If the Tree is just an integer
+        Aop = []  
         Lop = [] 
         Anum = [prefix]
         Lnum = [T]
         return Aop, Lop, Anum, Lnum
     
-    assert isinstance(T, list)
-    Lop,Aop = get_ops(T)
-    Lnum, Anum = get_nums(T)
+    assert isinstance(T, list) #Checking if the tree is an list
+     
+    Lop,Aop = get_ops(T) #Getting the information about the operators inside tree
+    Lnum, Anum = get_nums(T) #Getting the information about the numbers inside the tres
     
     return Aop, Lop, Anum, Lnum
     
