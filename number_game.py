@@ -215,7 +215,7 @@ def expr_tree_2_polish_str(T):
 
 def polish_str_2_expr_tree(pn_str):
     '''
-    
+
     Convert a polish notation string of an expression tree
     into an expression tree T.
 
@@ -228,22 +228,41 @@ def polish_str_2_expr_tree(pn_str):
     T
 
     '''
-    # raise NotImplementedError()
-    
-    def find_match(i):
-        '''
-        Starting at position i where pn_str[i] == '['
-        Return the index j of the matching ']'
-        That is, pn_str[j] == ']' and the substring pn_str[i:j+1]
-        is balanced
-        '''
-        raise NotImplementedError()
-     # .................................................................  
 
-    left_p = pn_str.find('[')
- 
-    raise NotImplementedError()
- 
+
+    result = []
+    result1 = []
+    T1 = 0
+    T2 = 0
+
+    if len(pn_str) < 10:
+        return pn_str
+
+    for k in range(len(pn_str)):
+        if pn_str[k+1] == '[':
+            result.append(k+1)
+        if pn_str[k] == ']':
+            result1.append(k)
+        if len(result) == len(result1) & len(result) > 0:  # if amount of '[' placed equals the amount of ']'
+            T1 = pn_str[result[0]:result1[-1]+1]  # left side tree
+            T2 = pn_str[result1[-1]+2:-1]  # right side tree
+            break
+
+    if pn_str[5].isnumeric():
+        T2 = T1
+        T1 = pn_str[3]+pn_str[4]+pn_str[5]
+    elif pn_str[4].isnumeric():
+        T2 = T1
+        T1 = pn_str[3]+pn_str[4]
+    elif pn_str[3].isnumeric():
+        T2 = T1
+        T1 = pn_str[3]
+
+    op = pn_str[1]
+    print(op)
+    print(T1)
+    print(T2)
+ # unfinished
    
 # ----------------------------------------------------------------------------
 
@@ -469,7 +488,7 @@ def replace_subtree(T, a, S):
 def mutate_num(T, Q):
     '''
     Mutate one of the numbers of the expression tree T
-    
+
     Parameters
     ----------
     T : expression tree
@@ -480,13 +499,42 @@ def mutate_num(T, Q):
     A mutated copy of T
 
     '''
-    
-    Aop, Lop, Anum, Lnum = decompose(T)    
-    mutant_T = copy.deepcopy(T)
-        
-    counter_Q = collections.Counter(Q) # some small numbers can be repeated
 
-    raise NotImplementedError()
+    if isinstance(T, int):
+        return T
+
+    Aop, Lop, Anum, Lnum = decompose(T)
+    mutant_T = copy.deepcopy(T)
+    counter_Q = collections.Counter(Q)  # some small numbers can be repeated
+
+    valid_num = set(Q) - set(Lnum)
+    valid_num = list(valid_num)
+
+    if len(valid_num) == 0:
+        return T
+
+    rand_num = random.choice(Anum)
+    i = rand_num[0]
+
+    if len(rand_num) < 2:
+        mutant_T[i] = random.choice(valid_num)
+
+    elif len(rand_num) == 2:
+        j = rand_num[1]
+        mutant_T[i][j] = random.choice(valid_num)
+
+    elif len(rand_num) == 3:
+        j = rand_num[1]
+        k = rand_num[2]
+        mutant_T[i][j][k] = random.choice(valid_num)
+
+    elif len(rand_num) > 3:
+        j = rand_num[1]
+        k = rand_num[2]
+        l = rand_num[3]
+        mutant_T[i][j][k][l] = random.choice(valid_num)
+
+    return mutant_T
     
 
 # ----------------------------------------------------------------------------
@@ -507,40 +555,61 @@ def mutate_op(T):
     '''
     if isinstance(T, int):
         return T
-    
+
     La = op_address_list(T)
     a = random.choice(La)  # random address of an op in T
     op_c = get_item(T, a)       # the char of the op
-    # mutant_c : a different op
+    op_list = (['-', '+', '*'])
 
-    raise NotImplementedError()
+    testT = T.copy()
+    i = a[0]
+
+    if len(a) < 2:
+        old_op = testT[i]
+        op_list.remove(old_op)
+        testT[i] = random.choice(op_list)
+
+    elif len(a) == 2:
+        j = a[1]
+        old_op = testT[i][j]
+        op_list.remove(old_op)
+        testT[i][j] = random.choice(op_list)
+
+    elif len(a) > 2:
+        j = a[1]
+        k = a[2]
+        old_op = testT[i][j][k]
+        op_list.remove(old_op)
+        testT[i][j][k] = random.choice(op_list)
+
+    return testT
     
 
 # ----------------------------------------------------------------------------
 
-def cross_over(P1, P2, Q):    
+def cross_over(P1, P2, Q):
     '''
     Perform crossover on two non trivial parents
-    
+
     Parameters
     ----------
     P1 : parent 1, non trivial expression tree  (root is an op)
     P2 : parent 2, non trivial expression tree  (root is an op)
         DESCRIPTION
-        
+
     Q : list of the available numbers
-        Q may contain repeated small numbers    
-        
+        Q may contain repeated small numbers
+
 
     Returns
     -------
     C1, C2 : two children obtained by crossover
     '''
-    
+
     def get_num_ind(aop, Anum):
         '''
         Return the indices [a,b) of the range of numbers
-        in Anum and Lum that are in the sub-tree 
+        in Anum and Lum that are in the sub-tree
         rooted at address aop
 
         Parameters
@@ -552,89 +621,92 @@ def cross_over(P1, P2, Q):
         Returns
         -------
         a, b : endpoints of the semi-open interval
-        
+
         '''
-        d = len(aop)-1  # depth of the operator. 
-                        # Root of the expression tree is a depth 0
+        d = len(aop) - 1  # depth of the operator.
+        # Root of the expression tree is a depth 0
         # K: list of the indices of the numbers in the subtrees
         # These numbers must have the same address prefix as aop
-        p = aop[:d] # prefix common to the elements of the subtrees
-        K = [k for k in range(len(Anum)) if Anum[k][:d]==p ]
-        return K[0], K[-1]+1
+        p = aop[:d]  # prefix common to the elements of the subtrees
+        K = [k for k in range(len(Anum)) if Anum[k][:d] == p]
+        return K[0], K[-1] + 1
         # .........................................................
-        
+
     Aop_1, Lop_1, Anum_1, Lnum_1 = decompose(P1)
     Aop_2, Lop_2, Anum_2, Lnum_2 = decompose(P2)
 
     C1 = copy.deepcopy(P1)
     C2 = copy.deepcopy(P2)
-    
-    i1 = np.random.randint(0,len(Lop_1)) # pick a subtree in C1 by selecting the index
-                                         # of an op
-    i2 = np.random.randint(0,len(Lop_2)) # Select a subtree in C2 in a similar way
- 
-    # i1, i2 = 4, 0 # DEBUG    
- 
-    # Try to swap in C1 and C2 the sub-trees S1 and S2 
+
+    i1 = np.random.randint(1, len(Lop_1))  # pick a subtree in C1 by selecting the index
+    # of an op
+    i2 = np.random.randint(1, len(Lop_2))  # Select a subtree in C2 in a similar way
+
+    # i1, i2 = 4, 0 # DEBUG
+
+    # Try to swap in C1 and C2 the sub-trees S1 and S2
     # at addresses Lop_1[i1] and Lop_2[i2].
     # That's our crossover operation!
-    
+
     # Compute some auxiliary number lists
-    
+
     # Endpoints of the intervals of the subtrees
-    a1, b1 = get_num_ind(Aop_1[i1], Anum_1)     # indices of the numbers in S1 
-                                                # wrt C1 number list Lnum_1
-    a2, b2 = get_num_ind(Aop_2[i2], Anum_2)   # same for S2 wrt C2
-    
+    a1, b1 = get_num_ind(Aop_1[i1], Anum_1)  # indices of the numbers in S1
+    # wrt C1 number list Lnum_1
+    a2, b2 = get_num_ind(Aop_2[i2], Anum_2)  # same for S2 wrt C2
+
     # Lnum_1[a1:b1] is the list of numbers in S1
     # Lnum_2[a2:b2] is the list of numbers in S2
-    
+
     # numbers is C1 not used in S1
-    nums_C1mS1 = Lnum_1[:a1]+Lnum_1[b1:]
+    nums_C1mS1 = Lnum_1[:a1] + Lnum_1[b1:]
     # numbers is C2-S2
-    nums_C2mS2 = Lnum_2[:a2]+Lnum_2[b2:]
-    
+    nums_C2mS2 = Lnum_2[:a2] + Lnum_2[b2:]
+
     # S2 is a fine replacement of S1 in C1
     # if nums_S2 + nums_C1mS1 is contained in Q
     # if not we can bottom up a subtree with  Q-nums_C1mS1
 
-    counter_Q = collections.Counter(Q) # some small numbers can be repeated
-    
-    d1 = len(Aop_1[i1])-1
-    aS1 = Aop_1[i1][:d1] # address of the subtree S1 
+    counter_Q = collections.Counter(Q)  # some small numbers can be repeated
+
+    d1 = len(Aop_1[i1]) - 1
+    aS1 = Aop_1[i1][:d1]  # address of the subtree S1
     S1 = get_item(C1, aS1)
 
-    # ABOUT 3 LINES DELETED
-    raise NotImplementedError()
-
-    # print(' DEBUG -------- S1 and S2 ----------') # DEBUG
-    # print(S1)
-    # print(S2)
+    d2 = len(Aop_2[i2]) - 1
+    aS2 = Aop_2[i2][:d2]
+    S2 = get_item(C2, aS2)
 
 
     # count the numbers (their occurences) in the candidate child C1
-    counter_1 = collections.Counter(Lnum_2[a2:b2]+nums_C1mS1)
-    
+    counter_1 = collections.Counter(Lnum_2[a2:b2] + nums_C1mS1)
+
     # Test whether child C1 is ok
-    if all(counter_Q[v]>=counter_1[v]  for v in counter_Q):
+    if all(counter_Q[v] >= counter_1[v] for v in counter_Q):
         # candidate is fine!  :-)
         C1 = replace_subtree(C1, aS1, S2)
     else:
         available_nums = counter_Q.copy()
         available_nums.subtract(
             collections.Counter(nums_C1mS1)
-            )
+        )
         R1, _ = bottom_up_creator(list(available_nums.elements()))
         C1 = replace_subtree(C1, aS1, R1)
-        
+
     # count the numbers (their occurences) in the candidate child C2
-    counter_2 = collections.Counter(Lnum_1[a1:b1]+nums_C2mS2)
-    
+    counter_2 = collections.Counter(Lnum_1[a1:b1] + nums_C2mS2)
+
     # Test whether child C2 is ok
-    
-    # ABOUT 10 LINES DELETED
-    raise NotImplementedError()
-    
-    
+    if all(counter_Q[v] >= counter_2[v] for v in counter_Q):
+        # candidate is fine!  :-)
+        C2 = replace_subtree(C2, aS2, S1)
+    else:
+        available_nums1 = counter_Q.copy()
+        available_nums1.subtract(
+            collections.Counter(nums_C2mS2)
+        )
+        R2, _ = bottom_up_creator(list(available_nums1.elements()))
+        C2 = replace_subtree(C2, aS2, R2)
+
     return C1, C2
 
