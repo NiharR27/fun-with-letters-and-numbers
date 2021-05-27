@@ -638,9 +638,9 @@ def cross_over(P1, P2, Q):
     C1 = copy.deepcopy(P1)
     C2 = copy.deepcopy(P2)
 
-    i1 = np.random.randint(1, len(Lop_1))  # pick a subtree in C1 by selecting the index
+    i1 = np.random.randint(0, len(Lop_1))  # pick a subtree in C1 by selecting the index
     # of an op
-    i2 = np.random.randint(1, len(Lop_2))  # Select a subtree in C2 in a similar way
+    i2 = np.random.randint(0, len(Lop_2))  # Select a subtree in C2 in a similar way
 
     # i1, i2 = 4, 0 # DEBUG
 
