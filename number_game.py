@@ -528,11 +528,18 @@ def mutate_num(T, Q):
         k = rand_num[2]
         mutant_T[i][j][k] = random.choice(valid_num)
 
-    elif len(rand_num) > 3:
+    elif len(rand_num) == 4:
         j = rand_num[1]
         k = rand_num[2]
         l = rand_num[3]
         mutant_T[i][j][k][l] = random.choice(valid_num)
+
+    elif len(rand_num) > 4:
+        j = rand_num[1]
+        k = rand_num[2]
+        l = rand_num[3]
+        m = rand_num[4]
+        mutant_T[i][j][k][l][m] = random.choice(valid_num)
 
     return mutant_T
     
@@ -575,12 +582,29 @@ def mutate_op(T):
         op_list.remove(old_op)
         testT[i][j] = random.choice(op_list)
 
-    elif len(a) > 2:
+    elif len(a) == 3:
         j = a[1]
         k = a[2]
         old_op = testT[i][j][k]
         op_list.remove(old_op)
         testT[i][j][k] = random.choice(op_list)
+
+    elif len(a) == 4:
+        j = a[1]
+        k = a[2]
+        l = a[3]
+        old_op = testT[i][j][k][l]
+        op_list.remove(old_op)
+        testT[i][j][k][l] = random.choice(op_list)
+
+    elif len(a) > 4:
+        j = a[1]
+        k = a[2]
+        l = a[3]
+        m = a[4]
+        old_op = testT[i][j][k][l][m]
+        op_list.remove(old_op)
+        testT[i][j][k][l][m] = random.choice(op_list)
 
     return testT
     
