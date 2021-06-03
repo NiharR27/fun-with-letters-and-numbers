@@ -235,8 +235,18 @@ def polish_str_2_expr_tree(pn_str):
     T1 = 0
     T2 = 0
 
-    if len(pn_str) < 10:
+    if len(pn_str) < 11:  # if tree 1 and 2 are only numerical
         return pn_str
+
+    if "-" in pn_str:  # placing quotation marks around operators in pn_str
+        a = "'" + "-" + "'"
+        pn_str = pn_str.replace("-", a)
+    if "+" in pn_str:
+        a = "'" + "+" + "'"
+        pn_str = pn_str.replace("+", a)
+    if "*" in pn_str:
+        a = "'" + "*" + "'"
+        pn_str = pn_str.replace("*", a)
 
     for k in range(len(pn_str)):
         if pn_str[k+1] == '[':
@@ -244,25 +254,25 @@ def polish_str_2_expr_tree(pn_str):
         if pn_str[k] == ']':
             result1.append(k)
         if len(result) == len(result1) & len(result) > 0:  # if amount of '[' placed equals the amount of ']'
-            T1 = pn_str[result[0]:result1[-1]+1]  # left side tree
+            T1 = pn_str[result[0]:result1[-1]+2]  # left side tree
             T2 = pn_str[result1[-1]+2:-1]  # right side tree
             break
 
-    if pn_str[5].isnumeric():
+    if pn_str[7].isnumeric():  # if Tree 1 is only numeric above loop wont work so switch T1 and T2 values
         T2 = T1
-        T1 = pn_str[3]+pn_str[4]+pn_str[5]
-    elif pn_str[4].isnumeric():
+        T1 = pn_str[5]+pn_str[6]+pn_str[7]+pn_str[8]
+    elif pn_str[6].isnumeric():
         T2 = T1
-        T1 = pn_str[3]+pn_str[4]
-    elif pn_str[3].isnumeric():
+        T1 = pn_str[5]+pn_str[6]+pn_str[7]
+    elif pn_str[5].isnumeric():
         T2 = T1
-        T1 = pn_str[3]
+        T1 = pn_str[5]+pn_str[6]
 
-    op = pn_str[1]
-    print(op)
-    print(T1)
-    print(T2)
- # unfinished
+    op = pn_str[1:5]
+
+    expT = "[" + op + T1 + T2 + "]"
+    expT = expT.replace(",", ", ")
+    return expT
    
 # ----------------------------------------------------------------------------
 
@@ -507,13 +517,13 @@ def mutate_num(T, Q):
     mutant_T = copy.deepcopy(T)
     counter_Q = collections.Counter(Q)  # some small numbers can be repeated
 
-    valid_num = set(Q) - set(Lnum)
+    valid_num = set(Q) - set(Lnum) # subtract nums available in game from nums used in tree 
     valid_num = list(valid_num)
 
     if len(valid_num) == 0:
         return T
 
-    rand_num = random.choice(Anum)
+    rand_num = random.choice(Anum) # pick a random number to change in T 
     i = rand_num[0]
 
     if len(rand_num) < 2:
@@ -569,12 +579,12 @@ def mutate_op(T):
     op_list = (['-', '+', '*'])
 
     testT = T.copy()
-    i = a[0]
+    i = a[0]  # pick the address of a random operator in T 
 
     if len(a) < 2:
-        old_op = testT[i]
-        op_list.remove(old_op)
-        testT[i] = random.choice(op_list)
+        old_op = testT[i]  # 
+        op_list.remove(old_op) 
+        testT[i] = random.choice(op_list) 
 
     elif len(a) == 2:
         j = a[1]
@@ -597,7 +607,7 @@ def mutate_op(T):
         op_list.remove(old_op)
         testT[i][j][k][l] = random.choice(op_list)
 
-    elif len(a) > 4:
+    elif len(a) > 4:  
         j = a[1]
         k = a[2]
         l = a[3]
