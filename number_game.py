@@ -230,13 +230,14 @@ def polish_str_2_expr_tree(pn_str):
 
     '''
 
-
+    
     result = []
     result1 = []
     T1 = 0
     T2 = 0
-
-    if "-" in pn_str:  # placing quotation marks around operators in pn_str
+    
+    # placing quotation marks around operators in pn_str
+    if "-" in pn_str:  
         a = "'" + "-" + "'"
         pn_str = pn_str.replace("-", a)
     if "+" in pn_str:
@@ -246,11 +247,13 @@ def polish_str_2_expr_tree(pn_str):
         a = "'" + "*" + "'"
         pn_str = pn_str.replace("*", a)
 
-    if len(pn_str) < 14:  # if tree 1 and 2 are only numerical
+    # if tree 1 and 2 are only numerical
+    if len(pn_str) < 14:  
         pn_str = pn_str.replace(",", ", ")
         pn_str = ast.literal_eval(pn_str)
         return pn_str
-
+    
+    
     for k in range(len(pn_str)):
         if pn_str[k+1] == '[':
             result.append(k+1)
@@ -261,7 +264,8 @@ def polish_str_2_expr_tree(pn_str):
             T2 = pn_str[result1[-1]+2:-1]  # right side tree
             break
 
-    if pn_str[7].isnumeric():  # if Tree 1 is only numeric above loop wont work so switch T1 and T2 values
+    # if Tree 1 is only numeric above loop wont work so set T1 as T2 values        
+    if pn_str[7].isnumeric():  
         T2 = pn_str[result[0]:result1[-1]+1]
         T1 = pn_str[5]+pn_str[6]+pn_str[7]+pn_str[8]
     elif pn_str[6].isnumeric():
@@ -274,7 +278,7 @@ def polish_str_2_expr_tree(pn_str):
     op = pn_str[1:5]  # operator Tree 0  
     expT = "[" + op + T1 + T2 + "]"
     expT = expT.replace(",", ", ")
-    expT = ast.literal_eval(expT)
+    expT = ast.literal_eval(expT)  
 
     return expT
    
@@ -512,7 +516,7 @@ def mutate_num(T, Q):
     A mutated copy of T
 
     '''
-
+    # if T is a scalar, then we return it directly
     if isinstance(T, int):
         return T
 
@@ -522,13 +526,15 @@ def mutate_num(T, Q):
 
     valid_num = set(Q) - set(Lnum) # subtract nums available in game from nums used in tree 
     valid_num = list(valid_num)
-
+    
+    # if no valid numbers available return it directly
     if len(valid_num) == 0:
         return T
 
     rand_num = random.choice(Anum) # pick a random number to change in T 
-    i = rand_num[0]
+    i = rand_num[0] # set random number to i 
 
+    # set mutant_T to random number depending on amount of dimensions in nested list T
     if len(rand_num) < 2:
         mutant_T[i] = random.choice(valid_num)
 
@@ -573,6 +579,7 @@ def mutate_op(T):
     A mutated copy of T
 
     '''
+    # if T is a scalar, then we return it directly
     if isinstance(T, int):
         return T
 
@@ -584,10 +591,11 @@ def mutate_op(T):
     testT = T.copy()
     i = a[0]  # pick the address of a random operator in T 
 
+    # if statements depending on amount of dimensions within nested list T 
     if len(a) < 2:
-        old_op = testT[i]  # 
-        op_list.remove(old_op) 
-        testT[i] = random.choice(op_list) 
+        old_op = testT[i]  # find operator value currently within T 
+        op_list.remove(old_op) # remove old operator from operator choice list 
+        testT[i] = random.choice(op_list) # set new operator randomly from op list
 
     elif len(a) == 2:
         j = a[1]
