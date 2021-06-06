@@ -758,7 +758,7 @@ def cross_over(P1, P2, Q):
 # ----------------------------------------------------------------------------
 
 def number_game_eval():
-     '''
+        '''
         Return the best combination of population and maximum generation of
         the given tree
 
@@ -767,124 +767,125 @@ def number_game_eval():
         Best pair of population and max generation,
         maximum value of population,
         maximum value of generation
-
         '''
     # Testing data
-    Q = [100, 50, 3, 3, 10, 75]
-    target = 449
-    Q.sort()
-    
-    # List of population sizes
-    pop_list = [583, 18, 21, 957, 861, 355, 754, 609, 305, 468, 452, 888, 294, 285, 244, 363, 345, 250, 637, 374]
-    
-    pop_list = sorted(pop_list);
-    print("POP:", pop_list)
-    
-    # Get the median of maximum generation of each population size 
-    max_gen_list = []
-    max_gen_list.append(statistics.median([1112, 1153, 1421, 1354, 1496])) #18
-    max_gen_list.append(statistics.median([932, 987, 1105, 793, 1106])) #21
-    max_gen_list.append(statistics.median([88, 122, 118, 97, 115])) #244
-    max_gen_list.append(statistics.median([130, 85, 118, 89, 85])) #250
-    max_gen_list.append(statistics.median([78, 98, 140, 101, 81])) #285
-    max_gen_list.append(statistics.median([76, 113, 75, 98, 82])) #294
-    max_gen_list.append(statistics.median([72, 84, 96, 87, 102])) #305
-    max_gen_list.append(statistics.median([65, 80, 85, 64, 82])) #345
-    max_gen_list.append(statistics.median([76, 79, 80, 64, 63])) #355
-    max_gen_list.append(statistics.median([74, 65, 80, 66, 72])) #363
-    max_gen_list.append(statistics.median([73, 51, 52, 55, 57])) #374
-    max_gen_list.append(statistics.median([68, 52, 53, 59, 50])) #452
-    max_gen_list.append(statistics.median([63, 56, 70, 65, 54])) #468
-    max_gen_list.append(statistics.median([45, 37, 42, 53, 44])) #583
-    max_gen_list.append(statistics.median([38, 54, 48, 42, 43])) #609
-    max_gen_list.append(statistics.median([33, 22, 32, 25, 32])) #637
-    max_gen_list.append(statistics.median([27, 28, 33, 32, 32])) #754
-    max_gen_list.append(statistics.median([5, 25, 5, 30, 4])) #861
-    max_gen_list.append(statistics.median([6, 5, 5, 5, 5])) #888
-    max_gen_list.append(statistics.median([4, 3, 4, 23, 3])) #957
-    print("MAX GEN: ", max_gen_list)
-    
-    # Result after running 30 times of evolve_pop() for each pair of values of
-    # population size and their maximum generation
-    '''
-    all_result = [[5, 1, 2, 2, 8, 1, 1, 1, 2, 1, 2, 8, 1, 8, 7, 358, 1, 3, 2, 1, 1, 1, 1, 1, 1, 2, 233, 33, 2, 1],
-                  [33, 1, 2, 1, 2, 1, 2, 1, 33, 1, 2, 33, 1, 3, 1, 1, 2, 5, 1, 1, 2, 2, 2, 1, 1, 2, 1, 2, 33, 1], 
-                  [2, 0, 0, 1, 2, 0, 1, 3, 1, 2, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 2, 1, 0, 1, 0], 
-                  [0, 0, 2, 0, 1, 0, 2, 0, 1, 1, 0, 1, 2, 1, 0, 2, 0, 0, 1, 0, 1, 1, 1, 0, 1, 2, 1, 1, 0, 0],
-                  [1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 2, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 2, 0, 0, 0, 0], 
-                  [0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 2], 
-                  [1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0], 
-                  [1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0], 
-                  [0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1], 
-                  [1, 0, 0, 0, 0, 2, 0, 1, 1, 0, 1, 1, 2, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1], 
-                  [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 2, 0, 0], 
-                  [0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1], 
-                  [0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1], 
-                  [1, 1, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0], 
-                  [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], 
-                  [0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1], 
-                  [0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1], 
-                  [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 2], 
-                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0], 
-                  [1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 2, 0, 1, 0, 1, 0, 0, 1, 1, 0, 2, 1, 0, 0, 1, 2, 0, 1, 0]]
-    '''
-    
-    # Another set of result
-    all_result = [[0, 2, 1, 2, 1, 0, 33, 2, 2, 33, 2, 1, 3, 2, 1, 1, 233, 2, 33, 3, 1, 233, 0, 1, 1, 0, 433, 8, 0, 1], 
-                [1, 33, 0, 33, 2, 1, 1, 358, 2, 1, 2, 1, 0, 1, 2, 1, 1, 8, 3, 2, 2, 8, 1, 1, 1, 33, 0, 3, 5, 1], 
-                [0, 0, 0, 0, 2, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 2, 1, 0, 1, 1, 1], 
-                [1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 2, 1, 1, 1, 0, 1, 1, 1], 
-                [1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 2, 1, 0, 0, 2, 0, 0, 1, 1, 1, 2, 1, 1, 1, 0, 1, 0, 0], 
-                [1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0], 
-                [1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 2, 0, 1, 1, 1, 2, 0, 1, 0, 1, 1, 0], 
-                [0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0], 
-                [0, 1, 1, 1, 0, 1, 1, 1, 2, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 2], 
-                [1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0], 
-                [0, 1, 2, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0], 
-                [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0], 
-                [1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1], 
-                [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0], 
-                [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0], 
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1], 
-                [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0], 
-                [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1], 
-                [0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 2, 0, 1, 0, 0, 1, 0, 0, 0, 0], 
-                [0, 1, 1, 3, 1, 1, 1, 0, 0, 0, 2, 2, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0]]
-    
-    
-    print('---------------------------------------------------------------------------------')
-    for index in range(len(pop_list)):
-            print("Population Size: ", pop_list[index])
-            print("Maximum Generation: ", max_gen_list[index])
-            print("Results: ", all_result[index])
-            print()
-    print('----------------------------------------------------------------------------------')
-    
-    # Get times of hitting perfect score of each pair of values of population sizes and their maximum generation
-    perfect_score_list = []
-    for listing in all_result:
-        perfect_times = listing.count(0)
-        perfect_score_list.append(perfect_times)
-    
-    print("Times of Perfect Score: ", perfect_score_list)
-    
-    # Get the best combination of population size and max generation
-    best_pop = pop_list[perfect_score_list.index(max(perfect_score_list))]
-    best_max_gen = max_gen_list[perfect_score_list.index(max(perfect_score_list))]
-    best_value = [best_pop ,best_max_gen]
-    
-    print('The best pair of population and max generation is: ',best_value )
-    print('The maximum value of population was: ', max(pop_list))
-    print('The maximum value in generation was: ',max(max_gen_list))
-    
-    # Plot a bar chart for our result
-    str_pop_list = [str(x) for x in pop_list]
-    plt.bar(str_pop_list,perfect_score_list)
-    plt.title('Population Size vs Times of Perfect Score')    
-    plt.xlabel('Population Size')
-    plt.ylabel('Times of Perfect Score')
-    plt.plot(str_pop_list, perfect_score_list, color='red', marker='o')
-    plt.grid(True)
-    
-    plt.show()
+        Q = [100, 50, 3, 3, 10, 75]
+        target = 449
+        Q.sort()
+        
+        # List of population sizes
+        pop_list = [583, 18, 21, 957, 861, 355, 754, 609, 305, 468, 452, 888, 294, 285, 244, 363, 345, 250, 637, 374]
+        
+        pop_list = sorted(pop_list);
+        print("POP:", pop_list)
+        
+        # Get the median of maximum generation of each population size 
+        max_gen_list = []
+        max_gen_list.append(statistics.median([1112, 1153, 1421, 1354, 1496])) #18
+        max_gen_list.append(statistics.median([932, 987, 1105, 793, 1106])) #21
+        max_gen_list.append(statistics.median([88, 122, 118, 97, 115])) #244
+        max_gen_list.append(statistics.median([130, 85, 118, 89, 85])) #250
+        max_gen_list.append(statistics.median([78, 98, 140, 101, 81])) #285
+        max_gen_list.append(statistics.median([76, 113, 75, 98, 82])) #294
+        max_gen_list.append(statistics.median([72, 84, 96, 87, 102])) #305
+        max_gen_list.append(statistics.median([65, 80, 85, 64, 82])) #345
+        max_gen_list.append(statistics.median([76, 79, 80, 64, 63])) #355
+        max_gen_list.append(statistics.median([74, 65, 80, 66, 72])) #363
+        max_gen_list.append(statistics.median([73, 51, 52, 55, 57])) #374
+        max_gen_list.append(statistics.median([68, 52, 53, 59, 50])) #452
+        max_gen_list.append(statistics.median([63, 56, 70, 65, 54])) #468
+        max_gen_list.append(statistics.median([45, 37, 42, 53, 44])) #583
+        max_gen_list.append(statistics.median([38, 54, 48, 42, 43])) #609
+        max_gen_list.append(statistics.median([33, 22, 32, 25, 32])) #637
+        max_gen_list.append(statistics.median([27, 28, 33, 32, 32])) #754
+        max_gen_list.append(statistics.median([5, 25, 5, 30, 4])) #861
+        max_gen_list.append(statistics.median([6, 5, 5, 5, 5])) #888
+        max_gen_list.append(statistics.median([4, 3, 4, 23, 3])) #957
+        print("MAX GEN: ", max_gen_list)
+        
+        # Result after running 30 times of evolve_pop() for each pair of values of
+        # population size and their maximum generation
+        '''
+        all_result = [[5, 1, 2, 2, 8, 1, 1, 1, 2, 1, 2, 8, 1, 8, 7, 358, 1, 3, 2, 1, 1, 1, 1, 1, 1, 2, 233, 33, 2, 1],
+                      [33, 1, 2, 1, 2, 1, 2, 1, 33, 1, 2, 33, 1, 3, 1, 1, 2, 5, 1, 1, 2, 2, 2, 1, 1, 2, 1, 2, 33, 1], 
+                      [2, 0, 0, 1, 2, 0, 1, 3, 1, 2, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 2, 1, 0, 1, 0], 
+                      [0, 0, 2, 0, 1, 0, 2, 0, 1, 1, 0, 1, 2, 1, 0, 2, 0, 0, 1, 0, 1, 1, 1, 0, 1, 2, 1, 1, 0, 0],
+                      [1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 2, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 2, 0, 0, 0, 0], 
+                      [0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 2], 
+                      [1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0], 
+                      [1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0], 
+                      [0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1], 
+                      [1, 0, 0, 0, 0, 2, 0, 1, 1, 0, 1, 1, 2, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1], 
+                      [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 2, 0, 0], 
+                      [0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1], 
+                      [0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1], 
+                      [1, 1, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0], 
+                      [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], 
+                      [0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1], 
+                      [0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1], 
+                      [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 2], 
+                      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0], 
+                      [1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 2, 0, 1, 0, 1, 0, 0, 1, 1, 0, 2, 1, 0, 0, 1, 2, 0, 1, 0]]
+        '''
+        
+        # Another set of result
+        all_result = [[0, 2, 1, 2, 1, 0, 33, 2, 2, 33, 2, 1, 3, 2, 1, 1, 233, 2, 33, 3, 1, 233, 0, 1, 1, 0, 433, 8, 0, 1], 
+                    [1, 33, 0, 33, 2, 1, 1, 358, 2, 1, 2, 1, 0, 1, 2, 1, 1, 8, 3, 2, 2, 8, 1, 1, 1, 33, 0, 3, 5, 1], 
+                    [0, 0, 0, 0, 2, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 2, 1, 0, 1, 1, 1], 
+                    [1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 2, 1, 1, 1, 0, 1, 1, 1], 
+                    [1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 2, 1, 0, 0, 2, 0, 0, 1, 1, 1, 2, 1, 1, 1, 0, 1, 0, 0], 
+                    [1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0], 
+                    [1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 2, 0, 1, 1, 1, 2, 0, 1, 0, 1, 1, 0], 
+                    [0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0], 
+                    [0, 1, 1, 1, 0, 1, 1, 1, 2, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 2], 
+                    [1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0], 
+                    [0, 1, 2, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0], 
+                    [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0], 
+                    [1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1], 
+                    [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0], 
+                    [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0], 
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1], 
+                    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0], 
+                    [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1], 
+                    [0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 2, 0, 1, 0, 0, 1, 0, 0, 0, 0], 
+                    [0, 1, 1, 3, 1, 1, 1, 0, 0, 0, 2, 2, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0]]
+        
+        
+        print('---------------------------------------------------------------------------------')
+        for index in range(len(pop_list)):
+                print("Population Size: ", pop_list[index])
+                print("Maximum Generation: ", max_gen_list[index])
+                print("Results: ", all_result[index])
+                print()
+        print('----------------------------------------------------------------------------------')
+        
+        # Get times of hitting perfect score of each pair of values of population sizes and their maximum generation
+        perfect_score_list = []
+        for listing in all_result:
+            perfect_times = listing.count(0)
+            perfect_score_list.append(perfect_times)
+        
+        print("Times of Perfect Score: ", perfect_score_list)
+        
+        # Get the best combination of population size and max generation
+        best_pop = pop_list[perfect_score_list.index(max(perfect_score_list))]
+        best_max_gen = max_gen_list[perfect_score_list.index(max(perfect_score_list))]
+        best_value = [best_pop ,best_max_gen]
+        
+        print('The best pair of population and max generation is: ',best_value )
+        print('The maximum value of population was: ', max(pop_list))
+        print('The maximum value in generation was: ',max(max_gen_list))
+        
+        # Plot a bar chart for our result
+        str_pop_list = [str(x) for x in pop_list]
+        plt.bar(str_pop_list,perfect_score_list)
+        plt.title('Population Size vs Times of Perfect Score')    
+        plt.xlabel('Population Size')
+        plt.ylabel('Times of Perfect Score')
+        plt.plot(str_pop_list, perfect_score_list, color='red', marker='o')
+        plt.grid(True)
+        
+        plt.show()
 
+
+  
