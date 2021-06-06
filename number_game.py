@@ -314,9 +314,8 @@ def op_address_list(T, prefix = None):
 
 # ----------------------------------------------------------------------------
 
-#Example tree: T1 = ['-', ['+', ['-', 75, ['-', 10, 3]], ['-', 100, 50]], 3]
-#Example tree: T2 = T = ['+', ['*', 5, 4] ,['-', 100, ['/', 20, 2] ]]
-def get_ops(arg): # returns (list of operators, list of their indices)
+
+def get_ops(arg): 
     '''
     Compute
         ops: list of Operators inside the tree
@@ -352,7 +351,7 @@ def get_ops(arg): # returns (list of operators, list of their indices)
                 idx.append([i] + x) #Appending the current index to idx
     return ops, idx 
 
-def get_nums(arg): # basically the same goes here
+def get_nums(arg): 
 
     '''
     Compute
@@ -379,17 +378,17 @@ def get_nums(arg): # basically the same goes here
         nums,idx
     
     '''
-    nums = []
-    idx = []
+    nums = [] #list of number in our tree
+    idx = [] #list of index of numbers in the tree
     for i in (1, 2):
-        if type(arg[i]) is list:
-            nums_sub, idx_sub = get_nums(arg[i])
-            nums += nums_sub
-            for x in idx_sub:
-                idx.append([i] + x)
-        else:
+        if type(arg[i]) is list: #check if its not scalar
+            nums_sub, idx_sub = get_nums(arg[i]) #recurse the function
+            nums += nums_sub #add the list of numbers from the sublist
+            for x in idx_sub: 
+                idx.append([i] + x) #append the current index to the idx
+        else: #if scalar
             nums.append(arg[i])
-            idx.append([i])
+            idx.append([i]) 
     return nums, idx
 
 def decompose(T, prefix = None):
