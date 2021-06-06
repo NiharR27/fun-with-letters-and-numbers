@@ -750,11 +750,17 @@ def cross_over(P1, P2, Q):
 # ----------------------------------------------------------------------------
 
 def number_game_eval():
-    '''
-        Print the results and visualise them by plotting a 
-        bar chatrt
-    '''
-    
+     '''
+        Return the best combination of population and maximum generation of
+        the given tree
+
+        Returns
+        -------
+        Best pair of population and max generation,
+        maximum value of population,
+        maximum value of generation
+
+        '''
     # Testing data
     Q = [100, 50, 3, 3, 10, 75]
     target = 449
@@ -792,6 +798,7 @@ def number_game_eval():
     
     # Result after running 30 times of evolve_pop() for each pair of values of
     # population size and their maximum generation
+    '''
     all_result = [[5, 1, 2, 2, 8, 1, 1, 1, 2, 1, 2, 8, 1, 8, 7, 358, 1, 3, 2, 1, 1, 1, 1, 1, 1, 2, 233, 33, 2, 1],
                   [33, 1, 2, 1, 2, 1, 2, 1, 33, 1, 2, 33, 1, 3, 1, 1, 2, 5, 1, 1, 2, 2, 2, 1, 1, 2, 1, 2, 33, 1], 
                   [2, 0, 0, 1, 2, 0, 1, 3, 1, 2, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 2, 1, 0, 1, 0], 
@@ -813,6 +820,7 @@ def number_game_eval():
                   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0], 
                   [1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 2, 0, 1, 0, 1, 0, 0, 1, 1, 0, 2, 1, 0, 0, 1, 2, 0, 1, 0]]
     '''
+    
     # Another set of result
     all_result = [[0, 2, 1, 2, 1, 0, 33, 2, 2, 33, 2, 1, 3, 2, 1, 1, 233, 2, 33, 3, 1, 233, 0, 1, 1, 0, 433, 8, 0, 1], 
                 [1, 33, 0, 33, 2, 1, 1, 358, 2, 1, 2, 1, 0, 1, 2, 1, 1, 8, 3, 2, 2, 8, 1, 1, 1, 33, 0, 3, 5, 1], 
@@ -834,7 +842,7 @@ def number_game_eval():
                 [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1], 
                 [0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 2, 0, 1, 0, 0, 1, 0, 0, 0, 0], 
                 [0, 1, 1, 3, 1, 1, 1, 0, 0, 0, 2, 2, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0]]
-    '''
+    
     
     print('---------------------------------------------------------------------------------')
     for index in range(len(pop_list)):
