@@ -235,9 +235,6 @@ def polish_str_2_expr_tree(pn_str):
     T1 = 0
     T2 = 0
 
-    if len(pn_str) < 11:  # if tree 1 and 2 are only numerical
-        return pn_str
-
     if "-" in pn_str:  # placing quotation marks around operators in pn_str
         a = "'" + "-" + "'"
         pn_str = pn_str.replace("-", a)
@@ -247,6 +244,11 @@ def polish_str_2_expr_tree(pn_str):
     if "*" in pn_str:
         a = "'" + "*" + "'"
         pn_str = pn_str.replace("*", a)
+
+    if len(pn_str) < 14:  # if tree 1 and 2 are only numerical
+        pn_str = pn_str.replace(",", ", ")
+        pn_str = ast.literal_eval(pn_str)
+        return pn_str
 
     for k in range(len(pn_str)):
         if pn_str[k+1] == '[':
@@ -259,19 +261,20 @@ def polish_str_2_expr_tree(pn_str):
             break
 
     if pn_str[7].isnumeric():  # if Tree 1 is only numeric above loop wont work so switch T1 and T2 values
-        T2 = T1
+        T2 = pn_str[result[0]:result1[-1]+1]
         T1 = pn_str[5]+pn_str[6]+pn_str[7]+pn_str[8]
     elif pn_str[6].isnumeric():
-        T2 = T1
+        T2 = pn_str[result[0]:result1[-1]+1]
         T1 = pn_str[5]+pn_str[6]+pn_str[7]
     elif pn_str[5].isnumeric():
-        T2 = T1
+        T2 = pn_str[result[0]:result1[-1]+1]
         T1 = pn_str[5]+pn_str[6]
 
-    op = pn_str[1:5]
-
+    op = pn_str[1:5]  # operator Tree 0  
     expT = "[" + op + T1 + T2 + "]"
     expT = expT.replace(",", ", ")
+    expT = ast.literal_eval(expT)
+
     return expT
    
 # ----------------------------------------------------------------------------
