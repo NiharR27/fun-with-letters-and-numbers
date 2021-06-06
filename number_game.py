@@ -51,7 +51,7 @@ import random
 import copy # for deepcopy
 
 import collections
-import ast
+import ast # for evaluating tree
 
 
 SMALL_NUMBERS = tuple(range(1,11))

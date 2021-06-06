@@ -138,13 +138,14 @@ for i in range(len(pop_list)):
     '''
     
     #18 0 
-print(all_result)
-
+#print(all_result)
+print('---------------------------------------------------------------------------------')
 for index in range(len(pop_list)):
         print("Population Size: ", pop_list[index])
         print("Maximum Generation: ", max_gen_list[index])
         print("Results: ", all_result[index])
         print()
+print('----------------------------------------------------------------------------------')
 '''
 maxCostList = []
 for listing in all_result:
@@ -152,6 +153,7 @@ for listing in all_result:
     maxCostList.append(maxCost)
     
 print(maxCostList)
+'''
 
 numberlist = []
 for listing in all_result:
@@ -159,7 +161,17 @@ for listing in all_result:
     numberlist.append(num_zero)
     
 print(numberlist)
-'''
+
+best_pop = pop_list[numberlist.index(max(numberlist))]
+best_max_gen = max_gen_list[numberlist.index(max(numberlist))]
+best_value = [best_pop ,best_max_gen]
+
+print('The best pair of population and max generation is: ',best_value )
+print('The maximum value of population was: ', max(pop_list))
+print('The maximum value in generation was: ',max(max_gen_list))
+
+
+
 def task2():
     
       
